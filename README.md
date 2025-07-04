@@ -66,61 +66,24 @@ docker-compose up --build
 
 #### Usage
 
-1. Ensure the bot is up, running, and configured correctly, whether locally or deployed. For testing, its best to try out with a paper account first.
-2. In TradingView (or any other alternative), create a price alert for a stock you own.
-3. [Local] Perform tests for each price alert in the Webhook section:
-   - For a connection smoke test, set up the webhook: `http://localhost:8000/webhook/fetch-portfolio` with payload:
-     ```json
-     {
-       "key": "your-webhook-secret"
-     }
-     ```
-     You should receive a Telegram message containing your positions. This is a sanity tests for the IBKR API connection.
-   - For a live sell market order test, set up the webhook: `http://localhost:8000/webhook/sell-market-order` with payload:
-     ```json
-     {
-       "key": "your-webhook-secret",
-       "symbol": "{{ticker}}",
-       "quantity": 1
-     }
-     ```
-     You should receive a Telegram message indicating the close and success status.
-
-#### Deployment
-
-If deploying to a server or cloud provider (e.g., GCP, AWS):
-
-- Update the webhook URL in TradingView to point to your publicly accessible endpoint.
-- Use a process manager (e.g., gunicorn, pm2) to run the bot in production mode.
-
-#### Security Best Practices
-
-- Keep the WEBHOOK_SECRET and Telegram bot token confidential.
-- Use HTTPS for production deployments to secure webhook requests.
-- Periodically rotate sensitive credentials (e.g., WEBHOOK_SECRET, TELEGRAM_BOT_TOKEN).
-
-### Development (helpful commands for me)
-
-- Activate the virtual environment (for windows)
+1. Generate a webhook secret to act as an API key
 
 ```bash
-.\env\Scripts\activate
+  openssl rand -hex 32 (this generates a 32 byte hexadecimal string)
 ```
 
-- Run a file from root
+2. Host the application somewhere (preferably on cloud)
 
-```bash
-python -m <sub-folder-name>.<file-name>
-```
+3. In TradingView (or any other alternative), create a price alert for a stock you own.
 
-- Start a local dev server
+For a buy alert, set up a webhook call to:
 
-```bash
-uvicorn main:app --reload --port 8080
-```
-
-- Generate a new 32 byte hexadecimal string (64 characters) to use as webhook secret
-
-```bash
-openssl rand -hex 32
-```
+`https://<hostname>/webhook/buy-signal/<ticker>` with payload:
+`json
+      {
+        "webhook_secret": "<your-webhook-secret>",
+        "current_price": "<shorthand-for-price>",
+        "note": "<your-note-if-any>"
+      }
+    `
+For a sell alert, send to `https://<hostname>/webhook/buy-signal/<ticker>` with the same payload.

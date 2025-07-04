@@ -5,13 +5,18 @@ import logging
 from controller.signal_controller import signal_router
 from telegram.telegram_client import TelegramClient
 
-logging.basicConfig(level=logging.INFO)
+from config import CORS_WHITELIST
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
+    allow_origins=[f"http://{ip}" for ip in CORS_WHITELIST],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 

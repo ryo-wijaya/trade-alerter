@@ -19,9 +19,15 @@ def construct_alert_message(signal_type, symbol, current_price, note=None):
     """
     Construct an alert message for buy or sell signals.
     """
-    message = f"{signal_type} Signal: {symbol} | Current Price: {current_price}"
+    message = (
+        f"🚨 {signal_type.value} Signal Alert 🚨\n"
+        "======================\n"
+        f"Symbol: {symbol}\n"
+        f"Price: {current_price}\n"
+    )
     if note:
-        message += f" | Note: {note}"
+        message += f"Note: {note}\n"
+
     return message
 
 

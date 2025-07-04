@@ -41,7 +41,13 @@ TELEGRAM_BOT_TOKEN=your-telegram-bot-token
 TELEGRAM_CHAT_ID=your-chat-id
 WEBHOOK_SECRET=your-secure-webhook-secret
 TIMEZONE=Asia/Singapore
+CORS_WHITELIST=<comma-separated-list-of-ips>
 ```
+
+IMPORTANT:
+
+- If no timezone is specified, it defaults to UTC.
+- If no CORS whitelist is specified, the server defaults to allowing all origins.
 
 #### Run application
 

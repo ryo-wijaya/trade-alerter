@@ -2,6 +2,8 @@
 
 A lightweight Python service that receives webhook alerts from external platforms, e.g. TradingView, and forwards them to you via a Telegram bot.
 
+You may host it on cloud e.g. Azure App Service or Google Cloud Run. Its Dockerized, so just build the image, publish it to the cloud container registry, and deploy from there.
+
 ### Setup
 
 #### Pre-requisites
@@ -84,7 +86,7 @@ docker-compose up --build
 
 For a buy alert, set up a webhook call to:
 
-`https://<hostname>/webhook/buy-signal/<ticker>` with payload:
+`https://<hostname>/webhook/buy-signal/<ticker>/` with payload:
 `json
       {
         "webhook_secret": "<your-webhook-secret>",
@@ -92,4 +94,4 @@ For a buy alert, set up a webhook call to:
         "note": "<your-note-if-any>"
       }
     `
-For a sell alert, send to `https://<hostname>/webhook/buy-signal/<ticker>` with the same payload.
+For a sell alert, send to `https://<hostname>/webhook/buy-signal/<ticker>/` with the same payload.
